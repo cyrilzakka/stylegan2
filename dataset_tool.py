@@ -676,7 +676,7 @@ def create_from_images(tfrecord_dir, image_dir, shuffle, res_log2=7, resize=None
             if resize is not None:
                 size = int(2 ** resize)
                 #img = imresize(img, (size, size))
-                img = np.array(Image.fromarray(img).resize((size, size))) 
+                img = np.array(PIL.Image.fromarray(img).resize((size, size))) 
             if channels == 1:
                 img = img[np.newaxis, :, :]  # HW => CHW
             else:
