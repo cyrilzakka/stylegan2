@@ -653,15 +653,8 @@ def create_from_images(tfrecord_dir, image_dir, shuffle, res_log2=7, resize=None
     print(f"detected {len(image_filenames)} images ...")
     if len(image_filenames) == 0:
         error("No input images found")
-<<<<<<< HEAD
     
-    if is_projector:
-        img = np.asarray(PIL.Image.open(image_filenames[0]).convert('RGB'))
-    else:
-        img = np.asarray(PIL.Image.open(image_filenames[0]).convert('L'))
-=======
-    img = np.asarray(PIL.Image.open(image_filenames[0]).convert('RGB'))
->>>>>>> parent of 6e23360... Update dataset_tool.py
+    img = np.asarray(PIL.Image.open(image_filenames[0]).convert('L'))
     #resolution = img.shape[0]
     channels = img.shape[2] if img.ndim == 3 else 1
     """
@@ -680,15 +673,7 @@ def create_from_images(tfrecord_dir, image_dir, shuffle, res_log2=7, resize=None
         )
         print("Adding the images to tfrecords ...")
         for idx in range(order.size):
-<<<<<<< HEAD
-            if is_projector:
-                img = np.asarray(PIL.Image.open(image_filenames[order[idx]]).convert('RGB'))
-            else:
-                img = np.asarray(PIL.Image.open(image_filenames[order[idx]]).convert('L'))
-          
-=======
-            img = np.asarray(PIL.Image.open(image_filenames[order[idx]]).convert('RGB'))
->>>>>>> parent of 6e23360... Update dataset_tool.py
+            img = np.asarray(PIL.Image.open(image_filenames[order[idx]]).convert('L'))
             if resize is not None:
                 size = int(2 ** resize)
                 #img = imresize(img, (size, size))
@@ -909,12 +894,6 @@ def execute_cmdline(argv):
         help="image width and height should be multiple of 2**res_log2 (default: 7)",
         type=int,
         default=7
-    )
-    p.add_argument(
-        "--is_projector",
-        help="Creates RGB dataset for projector and greyscale for GAN training",
-        default=False,
-        type=lambda x: (str(x).lower() == 'true')
     )
     
     p = add_command(
