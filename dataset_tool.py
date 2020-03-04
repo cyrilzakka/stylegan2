@@ -905,8 +905,8 @@ def execute_cmdline(argv):
     p.add_argument(
         "--is_projector",
         help="Creates RGB dataset for projector and greyscale for GAN training",
-        type:bool,
-        default=False
+        default=False,
+        type=lambda x: (str(x).lower() == 'true')
     )
     
     p = add_command(
