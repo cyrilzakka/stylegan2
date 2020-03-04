@@ -653,11 +653,15 @@ def create_from_images(tfrecord_dir, image_dir, shuffle, res_log2=7, resize=None
     print(f"detected {len(image_filenames)} images ...")
     if len(image_filenames) == 0:
         error("No input images found")
+<<<<<<< HEAD
     
     if is_projector:
         img = np.asarray(PIL.Image.open(image_filenames[0]).convert('RGB'))
     else:
         img = np.asarray(PIL.Image.open(image_filenames[0]).convert('L'))
+=======
+    img = np.asarray(PIL.Image.open(image_filenames[0]).convert('RGB'))
+>>>>>>> parent of 6e23360... Update dataset_tool.py
     #resolution = img.shape[0]
     channels = img.shape[2] if img.ndim == 3 else 1
     """
@@ -676,11 +680,15 @@ def create_from_images(tfrecord_dir, image_dir, shuffle, res_log2=7, resize=None
         )
         print("Adding the images to tfrecords ...")
         for idx in range(order.size):
+<<<<<<< HEAD
             if is_projector:
                 img = np.asarray(PIL.Image.open(image_filenames[order[idx]]).convert('RGB'))
             else:
                 img = np.asarray(PIL.Image.open(image_filenames[order[idx]]).convert('L'))
           
+=======
+            img = np.asarray(PIL.Image.open(image_filenames[order[idx]]).convert('RGB'))
+>>>>>>> parent of 6e23360... Update dataset_tool.py
             if resize is not None:
                 size = int(2 ** resize)
                 #img = imresize(img, (size, size))
