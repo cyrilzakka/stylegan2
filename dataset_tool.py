@@ -647,13 +647,17 @@ def _get_all_files(path):
     return return_list
 
 
-def create_from_images(tfrecord_dir, image_dir, shuffle, res_log2=7, resize=None):
+def create_from_images(tfrecord_dir, image_dir, shuffle, res_log2=7, resize=None, is_projector=False):
     print('Loading images from "%s"' % image_dir)
     image_filenames = _get_all_files(image_dir)
     print(f"detected {len(image_filenames)} images ...")
     if len(image_filenames) == 0:
         error("No input images found")
-    img = np.asarray(PIL.Image.open(image_filenames[0]).convert('L'))
+    
+    if is_projector:
+        img = np.asarray(PIL.Image.open(image_filenames[0]).convert('RGB'))
+    else:
+        img = np.asarray(PIL.Image.open(image_filenames[0]).convert('L'))
     #resolution = img.shape[0]
     channels = img.shape[2] if img.ndim == 3 else 1
     """
@@ -672,7 +676,11 @@ def create_from_images(tfrecord_dir, image_dir, shuffle, res_log2=7, resize=None
         )
         print("Adding the images to tfrecords ...")
         for idx in range(order.size):
-            img = np.asarray(PIL.Image.open(image_filenames[order[idx]]).convert('L'))
+            if is_projector:
+                img = np.asarray(PIL.Image.open(image_filenames[order[idx]]).convert('RGB'))
+            else:
+                img = np.asarray(PIL.Image.open(image_filenames[order[idx]]).convert('L'))
+          
             if resize is not None:
                 size = int(2 ** resize)
                 #img = imresize(img, (size, size))
