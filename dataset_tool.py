@@ -708,8 +708,12 @@ def create_from_images_raw(tfrecord_dir, image_dir, shuffle, res_log2=7, resize=
         for idx in range(order.size):
             if idx % 1000 == 0:
                 print ("added images", idx)
-            # Minor hack to painlessly convert greyscale images to RGB    
-            PIL.Image.open(image_filenames[order[idx]]).convert('RGB').save(image_filenames[order[idx]])
+            # Minor hack to painlessly convert greyscale images to RGB
+            if resize is not None:
+                PIL.Image.open(image_filenames[order[idx]]).convert('RGB').resize((resize, resize), PIL.Image.ANTIALIAS).save(image_filenames[order[idx]])
+            else:
+                PIL.Image.open(image_filenames[order[idx]]).convert('RGB').save(image_filenames[order[idx]])
+            
             with tf.gfile.FastGFile(image_filenames[order[idx]], 'rb') as fid:
                 encoded_jpg = fid.read()
                 tfr.add_image_raw(encoded_jpg)
