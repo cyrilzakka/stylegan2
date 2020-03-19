@@ -911,7 +911,7 @@ def execute_cmdline(argv):
     p.add_argument("image_dir", help="Directory containing the images")
     p.add_argument(
         "--resize",
-        help="resize to given power of 2 sized square images (default: None)",
+        help="width/height of the image (default: None)",
         type=int,
         default=None,
         required=False
