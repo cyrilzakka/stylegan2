@@ -692,7 +692,7 @@ def create_from_images_raw(tfrecord_dir, image_dir, shuffle, res_log2=7, resize=
     print(f"detected {len(image_filenames)} images ...")
     if len(image_filenames) == 0:
         error("No input images found")
-    img = np.asarray(PIL.Image.open(image_filenames[0]))
+    img = np.asarray(PIL.Image.open(image_filenames[0]).convert('RGB').resize((resize, resize), PIL.Image.ANTIALIAS))
     #resolution = img.shape[0]
     channels = img.shape[2] if img.ndim == 3 else 1
     
@@ -709,6 +709,12 @@ def create_from_images_raw(tfrecord_dir, image_dir, shuffle, res_log2=7, resize=
         for idx in range(order.size):
             if idx % 1000 == 0:
                 print ("added images", idx)
+            # Minor hack to painlessly convert greyscale images to RGB
+            if resize is not None:
+                PIL.Image.open(image_filenames[order[idx]]).convert('RGB').resize((resize, resize), PIL.Image.ANTIALIAS).save(image_filenames[order[idx]])
+            else:
+                PIL.Image.open(image_filenames[order[idx]]).convert('RGB').save(image_filenames[order[idx]])
+            
             with tf.gfile.FastGFile(image_filenames[order[idx]], 'rb') as fid:
                 encoded_jpg = fid.read()
                 tfr.add_image_raw(encoded_jpg)
@@ -906,7 +912,7 @@ def execute_cmdline(argv):
     p.add_argument("image_dir", help="Directory containing the images")
     p.add_argument(
         "--resize",
-        help="resize to given power of 2 sized square images (default: None)",
+        help="width/height of the image (default: None)",
         type=int,
         default=None,
         required=False
